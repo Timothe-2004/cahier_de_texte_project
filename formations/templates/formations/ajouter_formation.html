@@ -1,0 +1,75 @@
+<!-- templates/formations/ajouter_formation.html -->
+{% extends 'base.html' %}
+
+{% block title %}Ajouter une Formation - Cahier de Texte Universitaire{% endblock %}
+
+{% block content %}
+<div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'accueil' %}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'liste_formations' %}">Formations</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Ajouter une formation</li>
+        </ol>
+    </nav>
+
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Ajouter une nouvelle formation
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="id_titre" class="form-label">Titre de la formation</label>
+                                <input type="text" name="titre" id="id_titre" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="id_departement" class="form-label">Département</label>
+                                <select name="departement" id="id_departement" class="form-select" required>
+                                    <option value="" selected disabled>Sélectionnez un département</option>
+                                    {% for departement in form.departement.field.queryset %}
+                                    <option value="{{ departement.id }}">{{ departement.nom }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="id_description" class="form-label">Description</label>
+                        
+                                <textarea name="description" id="id_description" class="form-control" rows="5" required></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="id_objectifs" class="form-label">Objectifs</label>
+                                <textarea name="objectifs" id="id_objectifs" class="form-control" rows="5" required></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="id_credits_total" class="form-label">Crédits Total</label>
+                                <input type="number" name="credits_total" id="id_credits_total" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i> Enregistrer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

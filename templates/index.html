@@ -1,0 +1,38 @@
+# template index.html
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Bienvenue sur le Cahier de Texte Universitaire</h1>
+    <p class="lead">Une solution moderne pour la gestion des enseignements universitaires</p>
+    <hr class="my-4">
+    <p>Cette plateforme permet de gérer les formations, suivre les cours, planifier les séances et générer des statistiques.</p>
+    
+    {% if user.is_authenticated %}
+        <div class="row mt-4">
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Mes Cours</h5>
+                        <p class="card-text">Accédez à vos cours, consultez votre emploi du temps et remplissez les cahiers de texte.</p>
+                        <a href="{% url 'liste_cours' %}" class="btn btn-primary">Voir mes cours</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Mes Séances</h5>
+                        <p class="card-text">Planifiez et gérez vos séances de cours, prenez les présences et suivez les objectifs.</p>
+                        <a href="{% url 'liste_seances' %}" class="btn btn-primary">Voir mes séances</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <p class="mt-4">Veuillez vous connecter pour accéder à la plateforme.</p>
+        <a href="{% url 'login' %}" class="btn btn-primary">Connexion</a>
+    {% endif %}
+</div>
+{% endblock %}
