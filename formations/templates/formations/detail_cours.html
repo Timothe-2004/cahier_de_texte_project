@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ cours.titre }} - Cahier de Texte Universitaire{% endblock %}
+
+{% block content %}
+<div class="container">
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'accueil' %}">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'formations:liste_formations' %}">Formations</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'formations:detail_formation' formation.pk %}">{{ formation.titre }}</a></li>
+            <li class="breadcrumb-item active">{{ cours.titre }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow mb-4">
+                <div class="card-header bg-primary text-white">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h4 class="mb-0">{{ cours.titre }}</h4>
+                        <span class="badge bg-light text-primary">{{ cours.code }}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Description</h5>
+                    <p class="card-text">{{ cours.description }}</p>
+                </div>
+            </div>
+
+            {% if user.is_superuser or user.is_directeur_adjoint %}
+            <div class="card shadow">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">Actions</h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-2 d-md-flex">
+                        <a href="{% url 'formations:modifier_cours' formation.pk cours.pk %}" class="btn btn-success">
+                            <i class="fas fa-edit me-1"></i> Modifier le cours
+                        </a>
+                        <a href="{% url 'formations:supprimer_cours' formation.pk cours.pk %}" class="btn btn-danger">
+                            <i class="fas fa-trash me-1"></i> Supprimer le cours
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow">
+                <div class="card-header bg-light">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle text-primary me-2"></i>
+                        Informations
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-hashtag me-2"></i> Code</span>
+                            <span class="badge bg-primary">{{ cours.code }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-star me-2"></i> Crédits</span>
+                            <span>{{ cours.credits }}</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-clock me-2"></i> Volume horaire</span>
+                            <span>{{ cours.volume_horaire }}h</span>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-user-tie me-2"></i> Enseignant</span>
+                            <span>{{ cours.enseignant.get_full_name }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

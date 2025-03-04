@@ -10,7 +10,7 @@
             <i class="fas fa-chalkboard-teacher text-primary me-2"></i>
             Mes Cours
         </h1>
-        <a href="{% url 'ajouter_cours' %}" class="btn btn-primary">
+        <a href="{% url 'cours:creer_cours' %}" class="btn btn-primary">
             <i class="fas fa-plus me-1"></i> Ajouter un cours
         </a>
     </div>
@@ -57,7 +57,7 @@
                         {% for cours in cours %}
                         <tr>
                             <td>
-                                <a href="{% url 'detail_cours' cours.id %}" class="text-decoration-none fw-bold">
+                                <a href="{% url 'cours:detail_cours' cours.id %}" class="text-decoration-none fw-bold">
                                     {{ cours.titre }}
                                 </a>
                             </td>
@@ -67,14 +67,11 @@
                             <td>{{ cours.date_fin|date:"d/m/Y" }}</td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a href="{% url 'detail_cours' cours.id %}" class="btn btn-sm btn-outline-primary" title="Voir">
+                                    <a href="{% url 'cours:detail_cours' cours.id %}" class="btn btn-sm btn-outline-primary" title="Voir">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-outline-success" title="Éditer">
+                                    <a href="{% url 'cours:affecter_cours' cours.id %}" class="btn btn-sm btn-outline-success" title="Éditer">
                                         <i class="fas fa-edit"></i>
-                                    </a>
-                                    <a href="#" class="btn btn-sm btn-outline-danger" title="Supprimer">
-                                        <i class="fas fa-trash"></i>
                                     </a>
                                 </div>
                             </td>

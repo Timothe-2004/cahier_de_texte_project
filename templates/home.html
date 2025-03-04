@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}Accueil - Cahier de Texte Universitaire{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Bienvenue sur le Cahier de Texte Universitaire</h1>
+        <p class="lead">Gérez efficacement vos cours et suivez la progression de vos enseignements</p>
+    </div>
+
+    <div class="row g-4">
+        {% if user.is_authenticated %}
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Mes Cours</h5>
+                        <p class="card-text">Accédez à vos cours et gérez leur contenu.</p>
+                        <a href="{% url 'cours:liste_cours' %}" class="btn btn-primary">Voir mes cours</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Séances</h5>
+                        <p class="card-text">Planifiez et suivez vos séances de cours.</p>
+                        <a href="{% url 'seances:liste_seances' %}" class="btn btn-primary">Gérer les séances</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Formations</h5>
+                        <p class="card-text">Consultez les formations disponibles.</p>
+                        <a href="{% url 'formations:liste_formations' %}" class="btn btn-primary">Voir les formations</a>
+                    </div>
+                </div>
+            </div>
+
+            {% if user.is_superuser or user.is_chef_departement %}
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">Administration</h5>
+                        <p class="card-text">Gérez les utilisateurs et les paramètres.</p>
+                        <a href="{% url 'admin:index' %}" class="btn btn-primary">Accéder à l'administration</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+            <div class="col-md-6 mx-auto text-center">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Connexion requise</h5>
+                        <p class="card-text">Veuillez vous connecter pour accéder à toutes les fonctionnalités.</p>
+                        <a href="{% url 'accounts:login' %}" class="btn btn-primary">Se connecter</a>
+                        <p class="mt-3">
+                            Pas encore de compte ? 
+                            <a href="{% url 'accounts:register' %}">S'inscrire</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

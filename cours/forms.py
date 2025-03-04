@@ -1,22 +1,27 @@
-
 # forms.py (cours)
 from django import forms
-from .models import Cours, Ressource
+from formations.models import Cours
+from .models import Ressource
 
 class CoursForm(forms.ModelForm):
     class Meta:
         model = Cours
-        fields = ['module', 'titre', 'description', 'date_debut', 'date_fin', 'heures_total']
+        fields = ['code', 'titre', 'description', 'credits', 'volume_horaire', 'formation']
         widgets = {
-            'date_debut': forms.DateInput(attrs={'type': 'date'}),
-            'date_fin': forms.DateInput(attrs={'type': 'date'}),
-            'description': forms.Textarea(attrs={'rows': 5}),
+            'code': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Ex: INFO101'}),
+            'titre': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Titre du cours'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),
+            'credits': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
+            'volume_horaire': forms.NumberInput(attrs={'class': 'form-control', 'min': 0}),
+            'formation': forms.Select(attrs={'class': 'form-control'})
         }
 
 class RessourceForm(forms.ModelForm):
     class Meta:
         model = Ressource
-        fields = ['titre', 'description', 'fichier', 'lien']
+        fields = ['titre', 'description', 'fichier']
         widgets = {
-            'description': forms.Textarea(attrs={'rows': 3}),
+            'titre': forms.TextInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
+            'fichier': forms.FileInput(attrs={'class': 'form-control'})
         }

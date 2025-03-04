@@ -10,10 +10,15 @@
             <i class="fas fa-graduation-cap text-primary me-2"></i>
             Liste des Formations
         </h1>
-        {% if user.is_superuser or user.departement_dirige %}
-        <a href="{% url 'ajouter_formation' %}" class="btn btn-primary">
-            <i class="fas fa-plus me-1"></i> Ajouter une formation
-        </a>
+        {% if user.is_superuser or user.is_directeur_adjoint %}
+        <div class="btn-group">
+            <a href="{% url 'formations:creer_formation' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-1"></i> Ajouter une formation
+            </a>
+            <a href="{% url 'cours:creer_cours' %}" class="btn btn-success">
+                <i class="fas fa-user-plus me-1"></i> Créer un cours
+            </a>
+        </div>
         {% endif %}
     </div>
 
@@ -50,7 +55,6 @@
                             <th>Titre</th>
                             <th>Département</th>
                             <th>Responsable</th>
-                            <th>Crédits</th>
                             <th>Statut</th>
                             <th>Actions</th>
                         </tr>
@@ -59,13 +63,12 @@
                         {% for formation in formations %}
                         <tr>
                             <td>
-                                <a href="{% url 'detail_formation' formation.id %}" class="text-decoration-none fw-bold">
+                                <a href="{% url 'formations:detail_formation' formation.id %}" class="text-decoration-none fw-bold">
                                     {{ formation.titre }}
                                 </a>
                             </td>
                             <td>{{ formation.departement }}</td>
                             <td>{{ formation.responsable.get_full_name|default:formation.responsable.username }}</td>
-                            <td>{{ formation.credits_total }}</td>
                             <td>
                                 {% if formation.statut == 'brouillon' %}
                                 <span class="badge bg-secondary">Brouillon</span>
@@ -79,14 +82,14 @@
                             </td>
                             <td>
                                 <div class="btn-group" role="group">
-                                    <a href="{% url 'detail_formation' formation.id %}" class="btn btn-sm btn-outline-primary" title="Voir">
+                                    <a href="{% url 'formations:detail_formation' formation.id %}" class="btn btn-sm btn-outline-primary" title="Voir">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    {% if user.is_superuser or user.departement_dirige %}
-                                    <a href="#" class="btn btn-sm btn-outline-success" title="Éditer">
+                                    {% if user.is_superuser or user.is_directeur_adjoint %}
+                                    <a href="{% url 'formations:modifier_formation' formation.id %}" class="btn btn-sm btn-outline-success" title="Éditer">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-outline-danger" title="Supprimer">
+                                    <a href="{% url 'formations:supprimer_formation' formation.id %}" class="btn btn-sm btn-outline-danger" title="Supprimer">
                                         <i class="fas fa-trash"></i>
                                     </a>
                                     {% endif %}
@@ -95,7 +98,7 @@
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="6" class="text-center py-4">
+                            <td colspan="5" class="text-center py-4">
                                 <p class="text-muted mb-0">
                                     <i class="fas fa-info-circle me-1"></i>
                                     Aucune formation disponible pour le moment.

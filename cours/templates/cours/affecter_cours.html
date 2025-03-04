@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}Affecter un Cours - Cahier de Texte Universitaire{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="card-title mb-0">
+                        <i class="fas fa-user-plus me-2"></i>
+                        Affecter le cours : {{ cours.titre }}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                    <div class="messages">
+                        {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+
+                    {% if cours %}
+                    <form method="post" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Cours</label>
+                            <input type="text" class="form-control" value="{{ cours.code }} - {{ cours.titre }}" readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="enseignant" class="form-label">Enseignant</label>
+                            <select name="enseignant" id="enseignant" class="form-select" required>
+                                <option value="">Sélectionnez un enseignant...</option>
+                                {% for enseignant in enseignants %}
+                                <option value="{{ enseignant.id }}">{{ enseignant.get_full_name|default:enseignant.username }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="invalid-feedback">
+                                Veuillez sélectionner un enseignant.
+                            </div>
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Affecter le cours
+                            </button>
+                            <a href="{% url 'cours:liste_cours' %}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+                            </a>
+                        </div>
+                    </form>
+                    {% else %}
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-1"></i>
+                        Le cours n'existe pas.
+                    </div>
+                    <div class="d-grid">
+                        <a href="{% url 'cours:liste_cours' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-1"></i> Retour à la liste
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Activation de la validation des formulaires Bootstrap
+(function () {
+    'use strict'
+    var forms = document.querySelectorAll('.needs-validation')
+    Array.prototype.slice.call(forms)
+        .forEach(function (form) {
+            form.addEventListener('submit', function (event) {
+                if (!form.checkValidity()) {
+                    event.preventDefault()
+                    event.stopPropagation()
+                }
+                form.classList.add('was-validated')
+            }, false)
+        })
+})()
+</script>
+{% endblock %} 

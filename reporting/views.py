@@ -5,6 +5,10 @@ from django.db.models import Count, Sum, Avg
 from cours.models import Cours
 from seances.models import Seance, Presence
 from formations.models import Formation, Module
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+import weasyprint
+from accounts.decorators import directeur_adjoint_required
 
 def is_admin_or_chef(user):
     return user.is_superuser or hasattr(user, 'departement_dirige')
@@ -45,3 +49,34 @@ def statistiques(request):
     }
     
     return render(request, 'reporting/statistiques.html', context)
+
+@directeur_adjoint_required
+def rapport_enseignant(request, enseignant_id):
+    cours = Cours.objects.filter(enseignant_id=enseignant_id)
+    seances = Seance.objects.filter(cours__in=cours)
+    
+    html = render_to_string('reporting/rapport_enseignant.html', {
+        'cours': cours,
+        'seances': seances,
+    })
+    
+    pdf = weasyprint.HTML(string=html).write_pdf()
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="rapport_enseignant_{enseignant_id}.pdf"'
+    return response
+
+@login_required
+def bilan_formation(request, formation_id):
+    from formations.models import Formation
+    formation = Formation.objects.get(id=formation_id)
+    cours = Cours.objects.filter(module__formation=formation)
+    
+    html = render_to_string('reporting/bilan_formation.html', {
+        'formation': formation,
+        'cours': cours,
+    })
+    
+    pdf = weasyprint.HTML(string=html).write_pdf()
+    response = HttpResponse(pdf, content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="bilan_formation_{formation_id}.pdf"'
+    return response

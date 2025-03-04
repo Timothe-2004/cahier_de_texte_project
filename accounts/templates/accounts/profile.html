@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Mon Profil - {{ user.get_full_name|default:user.username }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header text-white">
+                    <h4 class="card-title mb-0">
+                        <i class="fas fa-id-card me-2"></i>
+                        Mon Profil
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="text-center">
+                                <i class="fas fa-user-circle fa-6x text-secondary"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <h5 class="mb-3">Informations personnelles</h5>
+                            <p><strong>Nom complet:</strong> {{ user.get_full_name }}</p>
+                            <p><strong>Email:</strong> {{ user.email }}</p>
+                            <p><strong>Rôle:</strong> {{ user.get_role_display }}</p>
+                            <p><strong>Date d'inscription:</strong> {{ user.date_joined|date:"d/m/Y" }}</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <h5 class="mb-3">Actions</h5>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'accounts:password_reset' %}" class="btn btn-primary">
+                                    <i class="fas fa-key me-1"></i> Changer mon mot de passe
+                                </a>
+                                <a href="{% url 'accounts:dashboard' %}" class="btn btn-secondary">
+                                    <i class="fas fa-tachometer-alt me-1"></i> Retour au tableau de bord
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

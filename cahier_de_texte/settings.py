@@ -41,10 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     
     # Mes applications
+    'accounts.apps.AccountsConfig',
     'formations.apps.FormationsConfig',
     'cours.apps.CoursConfig',
     'seances.apps.SeancesConfig',
     'reporting.apps.ReportingConfig',
+    
+    # Third party apps
+    'crispy_forms',
+    'crispy_bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +134,24 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# Configuration du modèle utilisateur personnalisé
+AUTH_USER_MODEL = 'accounts.User'
+
+# Configuration de la connexion
+LOGIN_REDIRECT_URL = 'accueil'
+LOGOUT_REDIRECT_URL = 'accounts:login'
+
+# Crispy Forms Configuration
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_CLASS_CONVERTERS = {
+    'textinput': "form-control",
+    'urlinput': "form-control",
+    'numberinput': "form-control",
+    'emailinput': "form-control",
+    'dateinput': "form-control",
+    'textarea': "form-control",
+    'passwordinput': "form-control",
+    'select': "form-control",
+}

@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmer la suppression - Cahier de Texte Universitaire{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow">
+                <div class="card-header bg-danger text-white">
+                    <h4 class="card-title mb-0">Confirmer la suppression</h4>
+                </div>
+                <div class="card-body">
+                    <p class="text-center mb-4">
+                        Êtes-vous sûr de vouloir supprimer définitivement {{ objet }} ?
+                        <br>
+                        <small class="text-muted">Cette action est irréversible.</small>
+                    </p>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                            {% if formation %}
+                            <a href="{% url 'formations:detail_formation' formation.pk %}" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-times me-1"></i> Annuler
+                            </a>
+                            {% else %}
+                            <a href="{% url 'formations:liste_formations' %}" class="btn btn-secondary me-md-2">
+                                <i class="fas fa-times me-1"></i> Annuler
+                            </a>
+                            {% endif %}
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash me-1"></i> Supprimer
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Remplir le Cahier de Texte{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row mb-4">
+        <div class="col">
+            <h1 class="display-4">
+                <i class="fas fa-edit text-primary me-2"></i>
+                Remplir le Cahier de Texte
+            </h1>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-header bg-light">
+            <h3 class="card-title mb-0">
+                Séance du {{ seance.date|date:"d/m/Y" }} - {{ seance.cours.titre }}
+            </h3>
+        </div>
+        <div class="card-body">
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <p><strong>Enseignant :</strong> {{ seance.cours.enseignant.get_full_name }}</p>
+                    <p><strong>Horaire :</strong> {{ seance.heure_debut|time:"H:i" }} - {{ seance.heure_fin|time:"H:i" }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Salle :</strong> {{ seance.salle }}</p>
+                    <p><strong>Formation :</strong> {{ seance.cours.formation.titre }}</p>
+                </div>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="mb-3">
+                    <label for="{{ field.id_for_label }}" class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <div class="alert alert-danger mt-2">
+                        {{ field.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+
+                <div class="d-flex justify-content-end mt-4">
+                    <a href="{% url 'seances:liste_seances' %}" class="btn btn-secondary me-2">Annuler</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-2"></i>Enregistrer
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %} 

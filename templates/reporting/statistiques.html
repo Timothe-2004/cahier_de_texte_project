@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Statistiques générales</h2>
+    
+    <div class="row">
+        <div class="col-md-3 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>{{ total_formations }}</h3>
+                    <p class="text-muted">Formations</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>{{ total_modules }}</h3>
+                    <p class="text-muted">Modules</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>{{ total_cours }}</h3>
+                    <p class="text-muted">Cours</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-4">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h3>{{ total_seances }}</h3>
+                    <p class="text-muted">Séances</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Formations par département</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Département</th>
+                                <th>Nombre de formations</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for stat in formations_par_departement %}
+                            <tr>
+                                <td>{{ stat.departement__nom }}</td>
+                                <td>{{ stat.count }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Taux de présence global</h5>
+                </div>
+                <div class="card-body text-center">
+                    <h2>{{ taux_presence|floatformat:1 }}%</h2>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ taux_presence }}%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

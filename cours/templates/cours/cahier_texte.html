@@ -8,8 +8,8 @@
     <nav aria-label="breadcrumb" class="mb-4">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{% url 'accueil' %}">Accueil</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'liste_cours' %}">Mes Cours</a></li>
-            <li class="breadcrumb-item"><a href="{% url 'detail_cours' cours.id %}">{{ cours.titre }}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'cours:mes_cours' %}">Mes Cours</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'cours:detail_cours' cours.id %}">{{ cours.titre }}</a></li>
             <li class="breadcrumb-item active" aria-current="page">Cahier de Texte</li>
         </ol>
     </nav>
@@ -27,8 +27,7 @@
                     <thead class="table-light">
                         <tr>
                             <th>Date</th>
-                            <th>Titre</th>
-                            <th>Contenu</th>
+                            <th>Description</th>
                             <th>Durée</th>
                             <th>Salle</th>
                         </tr>
@@ -37,14 +36,13 @@
                         {% for seance in seances %}
                         <tr>
                             <td>{{ seance.date|date:"d/m/Y" }}</td>
-                            <td>{{ seance.titre }}</td>
-                            <td>{{ seance.contenu }}</td>
+                            <td>{{ seance.description }}</td>
                             <td>{{ seance.duree }} heures</td>
                             <td>{{ seance.salle }}</td>
                         </tr>
                         {% empty %}
                         <tr>
-                            <td colspan="5" class="text-center py-4">
+                            <td colspan="4" class="text-center py-4">
                                 <p class="text-muted mb-0">
                                     <i class="fas fa-info-circle me-1"></i>
                                     Aucune séance n'a encore été planifiée pour ce cours.

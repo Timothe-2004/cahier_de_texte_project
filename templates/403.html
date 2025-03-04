@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="alert alert-danger">
+            <h4>Accès refusé</h4>
+            <p>Vous n'avez pas les permissions nécessaires pour accéder à cette page.</p>
+        </div>
+        <a href="{% url 'accounts:dashboard' %}" class="btn btn-primary">Retour au tableau de bord</a>
+    </div>
+</div>
+{% endblock %} 

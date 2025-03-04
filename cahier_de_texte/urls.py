@@ -18,13 +18,28 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
+from rest_framework.routers import DefaultRouter
+from formations.api import FormationViewSet, CoursViewSet
+from seances.api import SeanceViewSet, PresenceViewSet, ObjectifViewSet
+
+# Création du routeur pour l'API
+router = DefaultRouter()
+router.register(r'api/formations', FormationViewSet)
+router.register(r'api/cours', CoursViewSet)
+router.register(r'api/seances', SeanceViewSet)
+router.register(r'api/presences', PresenceViewSet)
+router.register(r'api/objectifs', ObjectifViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='index.html'), name='accueil'),
-    path('formations/', include('formations.urls')),
-    path('cours/', include('cours.urls')),
-    path('seances/', include('seances.urls')),
-    path('reporting/', include('reporting.urls')),
-    path('accounts/', include('django.contrib.auth.urls')),
+    path('', TemplateView.as_view(template_name='home.html'), name='accueil'),
+    path('accounts/', include('accounts.urls')),
+    path('formations/', include('formations.urls', namespace='formations')),
+    path('cours/', include('cours.urls', namespace='cours')),
+    path('seances/', include('seances.urls', namespace='seances')),
+    # Temporairement désactivé en attendant la configuration de WeasyPrint
+    # path('reporting/', include('reporting.urls')),
+    # URLs de l'API
+    path('', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
 ]

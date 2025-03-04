@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+
+{% block title %}Liste des Cours{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.2.2/css/buttons.bootstrap5.min.css"/>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Liste des Cours</h1>
+        {% if user.is_directeur_adjoint or user.is_chef_departement %}
+        <div>
+            <a href="{% url 'cours:creer_cours' %}" class="btn btn-primary">
+                <i class="fas fa-plus me-2"></i>Nouveau Cours
+            </a>
+            <a href="{% url 'cours:recapitulatif_cours' %}" class="btn btn-info">
+                <i class="fas fa-file-alt me-2"></i>Récapitulatif
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table id="coursTable" class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Titre</th>
+                        <th>Formation</th>
+                        <th>Enseignant</th>
+                        <th>Volume Horaire</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cours in cours %}
+                    <tr>
+                        <td>{{ cours.code }}</td>
+                        <td>{{ cours.titre }}</td>
+                        <td>{{ cours.formation.titre }}</td>
+                        <td>
+                            {% if cours.enseignant %}
+                            {{ cours.enseignant.get_full_name }}
+                            {% else %}
+                            <span class="text-muted">Non affecté</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ cours.volume_horaire }}h</td>
+                        <td>
+                            <div class="btn-group" role="group">
+                                <a href="{% url 'cours:detail_cours' cours.pk %}" class="btn btn-sm btn-info" title="Détails">
+                                    <i class="fas fa-eye"></i>
+                                </a>
+                                {% if user.is_directeur_adjoint or user.is_chef_departement %}
+                                <a href="{% url 'cours:affecter_cours' cours.id %}" class="btn btn-sm btn-primary" title="Affecter">
+                                    <i class="fas fa-user-plus"></i>
+                                </a>
+                                {% endif %}
+                                {% if user == cours.enseignant %}
+                                <a href="{% url 'cours:cahier_texte' cours.id %}" class="btn btn-sm btn-success" title="Cahier de texte">
+                                    <i class="fas fa-book"></i>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/dataTables.buttons.min.js"></script>
+<script type="text/javascript" src="https://cdn.datatables.net/buttons/2.2.2/js/buttons.bootstrap5.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#coursTable').DataTable({
+        language: {
+            url: '//cdn.datatables.net/plug-ins/1.11.5/i18n/fr-FR.json'
+        },
+        dom: 'Bfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+        pageLength: 10,
+        order: [[1, 'asc']],
+        responsive: true
+    });
+});
+</script>
+{% endblock %} 
