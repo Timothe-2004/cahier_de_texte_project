@@ -3,7 +3,18 @@
     "builds": [
         {
             "src": "cahier_de_texte/wsgi.py",
-            "use": "@vercel/python"
+            "use": "@vercel/python",
+            "config": {
+                "maxLambdaSize": "15mb",
+                "runtime": "python3.9"
+            }
+        },
+        {
+            "src": "build.sh",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "staticfiles"
+            }
         }
     ],
     "routes": [
@@ -17,6 +28,7 @@
         }
     ],
     "env": {
-        "DJANGO_SETTINGS_MODULE": "cahier_de_texte.settings"
+        "DJANGO_SETTINGS_MODULE": "cahier_de_texte.settings",
+        "PYTHONPATH": "."
     }
 }
