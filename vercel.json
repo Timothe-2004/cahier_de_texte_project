@@ -10,7 +10,7 @@
             }
         },
         {
-            "src": "build.sh",
+            "src": "build_files.sh",
             "use": "@vercel/static-build",
             "config": {
                 "distDir": "staticfiles"
@@ -29,6 +29,16 @@
     ],
     "env": {
         "DJANGO_SETTINGS_MODULE": "cahier_de_texte.settings",
-        "PYTHONPATH": "."
+        "PYTHONPATH": ".",
+        "DJANGO_ALLOWED_HOSTS": ".vercel.app",
+        "DEBUG": "False",
+        "DATABASE_URL": "postgresql://admin:u9gBdkqfIGj69mglbgtfRReXJ5za9WmP@dpg-cv46b95ds78s73e4hvlg-a.oregon-postgres.render.com:5432/cahier_de_texte",
+        "DB_NAME": "cahier_de_texte",
+        "DB_USER": "admin",
+        "DB_PASSWORD": "u9gBdkqfIGj69mglbgtfRReXJ5za9WmP",
+        "DB_HOST": "dpg-cv46b95ds78s73e4hvlg-a.oregon-postgres.render.com",
+        "DB_PORT": "5432",
+        "STATIC_ROOT": "staticfiles",
+        "STATIC_URL": "/static/"
     }
 }
